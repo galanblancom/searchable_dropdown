@@ -32,6 +32,7 @@ class SearchableDropdown<T> extends StatefulWidget {
     bool isDialogExpanded = true,
     bool hasTrailingClearIcon = true,
     double? dialogOffset,
+    double? scrollSensitivity,
   }) : this._(
           key: key,
           hintText: hintText,
@@ -55,14 +56,14 @@ class SearchableDropdown<T> extends StatefulWidget {
           isDialogExpanded: isDialogExpanded,
           hasTrailingClearIcon: hasTrailingClearIcon,
           dialogOffset: dialogOffset,
+          scrollSensitivity: scrollSensitivity,
         );
 
   const SearchableDropdown.paginated({
     required Future<List<SearchableDropdownMenuItem<T>>?> Function(
       int,
       String?,
-    )?
-        paginatedRequest,
+    )? paginatedRequest,
     int? requestItemCount,
     Key? key,
     SearchableDropdownController<T>? controller,
@@ -86,6 +87,7 @@ class SearchableDropdown<T> extends StatefulWidget {
     bool hasTrailingClearIcon = true,
     SearchableDropdownMenuItem<T>? initialValue,
     double? dialogOffset,
+    double? scrollSensitivity,
   }) : this._(
           key: key,
           controller: controller,
@@ -111,6 +113,7 @@ class SearchableDropdown<T> extends StatefulWidget {
           hasTrailingClearIcon: hasTrailingClearIcon,
           initialFutureValue: initialValue,
           dialogOffset: dialogOffset,
+          scrollSensitivity: scrollSensitivity,
         );
 
   const SearchableDropdown.future({
@@ -138,6 +141,7 @@ class SearchableDropdown<T> extends StatefulWidget {
     bool hasTrailingClearIcon = true,
     SearchableDropdownMenuItem<T>? initialValue,
     double? dialogOffset,
+    double? scrollSensitivity,
   }) : this._(
           futureRequest: futureRequest,
           key: key,
@@ -162,6 +166,7 @@ class SearchableDropdown<T> extends StatefulWidget {
           hasTrailingClearIcon: hasTrailingClearIcon,
           initialFutureValue: initialValue,
           dialogOffset: dialogOffset,
+          scrollSensitivity: scrollSensitivity,
         );
 
   const SearchableDropdown._({
@@ -192,6 +197,7 @@ class SearchableDropdown<T> extends StatefulWidget {
     this.isDialogExpanded = true,
     this.hasTrailingClearIcon = true,
     this.dialogOffset,
+    this.scrollSensitivity,
   });
 
   //Is dropdown enabled
@@ -210,6 +216,9 @@ class SearchableDropdown<T> extends StatefulWidget {
 
   /// Dialog offset from dropdown.
   final double? dialogOffset;
+
+  /// Scroll sensitivity.
+  final double? scrollSensitivity;
 
   /// Delay of dropdown's search callback after typing complete.
   final Duration? changeCompletionDelay;
@@ -333,6 +342,7 @@ class _SearchableDropdownState<T> extends State<SearchableDropdown<T>> {
       isDialogExpanded: widget.isDialogExpanded,
       hasTrailingClearIcon: widget.hasTrailingClearIcon,
       dialogOffset: widget.dialogOffset ?? 35,
+      scrollSensitivity: widget.scrollSensitivity ?? 150.0,
     );
 
     return SizedBox(
@@ -366,6 +376,7 @@ class _DropDown<T> extends StatelessWidget {
     this.searchHintText,
     this.changeCompletionDelay,
     this.hasTrailingClearIcon = true,
+    this.scrollSensitivity,
   });
 
   final bool isEnabled;
@@ -391,6 +402,7 @@ class _DropDown<T> extends StatelessWidget {
   final Widget? leadingIcon;
   final Widget? hintText;
   final Widget? noRecordText;
+  final double? scrollSensitivity;
 
   @override
   Widget build(BuildContext context) {
@@ -528,6 +540,7 @@ class _DropDown<T> extends StatelessWidget {
                   paginatedRequest: paginatedRequest,
                   searchHintText: searchHintText,
                   changeCompletionDelay: changeCompletionDelay,
+                  scrollSensitivity: scrollSensitivity,
                 ),
               ),
             ],
@@ -575,6 +588,7 @@ class _DropDownCard<T> extends StatelessWidget {
     this.onChanged,
     this.noRecordText,
     this.changeCompletionDelay,
+    this.scrollSensitivity,
   });
 
   final bool isReversed;
@@ -587,6 +601,7 @@ class _DropDownCard<T> extends StatelessWidget {
   final String? searchHintText;
   final void Function(T? value)? onChanged;
   final Widget? noRecordText;
+  final double? scrollSensitivity;
 
   @override
   Widget build(BuildContext context) {
@@ -619,6 +634,7 @@ class _DropDownCard<T> extends StatelessWidget {
                       isReversed: isReversed,
                       noRecordText: noRecordText,
                       onChanged: onChanged,
+                      scrollSensitivity: scrollSensitivity,
                     ),
                   ),
                 ],
@@ -675,6 +691,7 @@ class _DropDownListView<T> extends StatefulWidget {
     this.paginatedRequest,
     this.noRecordText,
     this.onChanged,
+    this.scrollSensitivity,
   });
 
   final bool isReversed;
@@ -685,6 +702,7 @@ class _DropDownListView<T> extends StatefulWidget {
   final SearchableDropdownController<T> dropdownController;
   final void Function(T? value)? onChanged;
   final Widget? noRecordText;
+  final double? scrollSensitivity;
 
   @override
   State<_DropDownListView<T>> createState() => _DropDownListViewState<T>();
@@ -789,7 +807,6 @@ class _DropDownListViewState<T> extends State<_DropDownListView<T>> {
   }
 
   void scrollControllerListener({
-    double sensitivity = 150.0,
     Duration throttleDuration = const Duration(milliseconds: 400),
   }) {
     if (timer != null) return;
@@ -801,13 +818,17 @@ class _DropDownListViewState<T> extends State<_DropDownListView<T>> {
     final currentScroll = position.pixels;
     final dropdownController = widget.dropdownController;
     final searchText = dropdownController.searchText;
-    if (maxScroll - currentScroll <= sensitivity) {
+
+    if (maxScroll - currentScroll <= (widget.scrollSensitivity ?? 150.0)) {
       if (searchText.isNotEmpty) {
         dropdownController.getItemsWithPaginatedRequest(
-            page: dropdownController.page, key: searchText,);
+          page: dropdownController.page,
+          key: searchText,
+        );
       } else {
         dropdownController.getItemsWithPaginatedRequest(
-            page: dropdownController.page,);
+          page: dropdownController.page,
+        );
       }
     }
   }

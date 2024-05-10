@@ -589,6 +589,7 @@ class _DropDownCard<T> extends StatelessWidget {
     this.noRecordText,
     this.changeCompletionDelay,
     this.scrollSensitivity,
+    this.searchBarStyle,
   });
 
   final bool isReversed;
@@ -602,6 +603,7 @@ class _DropDownCard<T> extends StatelessWidget {
   final void Function(T? value)? onChanged;
   final Widget? noRecordText;
   final double? scrollSensitivity;
+  final TextStyle? searchBarStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -626,6 +628,7 @@ class _DropDownCard<T> extends StatelessWidget {
                     controller: controller,
                     searchHintText: searchHintText,
                     changeCompletionDelay: changeCompletionDelay,
+                    style: searchBarStyle,
                   ),
                   Flexible(
                     child: _DropDownListView(
@@ -652,10 +655,12 @@ class _DropDownSearchBar<T> extends StatelessWidget {
     required this.controller,
     this.searchHintText,
     this.changeCompletionDelay,
+    this.style,
   });
   final Duration? changeCompletionDelay;
   final SearchableDropdownController<T> controller;
   final String? searchHintText;
+  final TextStyle? style;
 
   @override
   Widget build(BuildContext context) {
@@ -679,6 +684,7 @@ class _DropDownSearchBar<T> extends StatelessWidget {
             isNewSearch: true,
           );
         },
+        style: style,
       ),
     );
   }

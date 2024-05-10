@@ -33,6 +33,7 @@ class SearchableDropdown<T> extends StatefulWidget {
     bool hasTrailingClearIcon = true,
     double? dialogOffset,
     double? scrollSensitivity,
+    TextStyle? searchBarStyle,
   }) : this._(
           key: key,
           hintText: hintText,
@@ -57,6 +58,7 @@ class SearchableDropdown<T> extends StatefulWidget {
           hasTrailingClearIcon: hasTrailingClearIcon,
           dialogOffset: dialogOffset,
           scrollSensitivity: scrollSensitivity,
+          searchBarStyle: searchBarStyle,
         );
 
   const SearchableDropdown.paginated({
@@ -88,6 +90,7 @@ class SearchableDropdown<T> extends StatefulWidget {
     SearchableDropdownMenuItem<T>? initialValue,
     double? dialogOffset,
     double? scrollSensitivity,
+    TextStyle? searchBarStyle,
   }) : this._(
           key: key,
           controller: controller,
@@ -114,6 +117,7 @@ class SearchableDropdown<T> extends StatefulWidget {
           initialFutureValue: initialValue,
           dialogOffset: dialogOffset,
           scrollSensitivity: scrollSensitivity,
+          searchBarStyle: searchBarStyle,
         );
 
   const SearchableDropdown.future({
@@ -142,6 +146,7 @@ class SearchableDropdown<T> extends StatefulWidget {
     SearchableDropdownMenuItem<T>? initialValue,
     double? dialogOffset,
     double? scrollSensitivity,
+    TextStyle? searchBarStyle,
   }) : this._(
           futureRequest: futureRequest,
           key: key,
@@ -167,6 +172,7 @@ class SearchableDropdown<T> extends StatefulWidget {
           initialFutureValue: initialValue,
           dialogOffset: dialogOffset,
           scrollSensitivity: scrollSensitivity,
+          searchBarStyle: searchBarStyle,
         );
 
   const SearchableDropdown._({
@@ -198,6 +204,7 @@ class SearchableDropdown<T> extends StatefulWidget {
     this.hasTrailingClearIcon = true,
     this.dialogOffset,
     this.scrollSensitivity,
+    this.searchBarStyle,
   });
 
   //Is dropdown enabled
@@ -219,6 +226,9 @@ class SearchableDropdown<T> extends StatefulWidget {
 
   /// Scroll sensitivity.
   final double? scrollSensitivity;
+
+  /// SearchBar style.
+  final TextStyle? searchBarStyle;
 
   /// Delay of dropdown's search callback after typing complete.
   final Duration? changeCompletionDelay;

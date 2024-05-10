@@ -353,6 +353,7 @@ class _SearchableDropdownState<T> extends State<SearchableDropdown<T>> {
       hasTrailingClearIcon: widget.hasTrailingClearIcon,
       dialogOffset: widget.dialogOffset ?? 35,
       scrollSensitivity: widget.scrollSensitivity ?? 150.0,
+      searchBarStyle: widget.searchBarStyle,
     );
 
     return SizedBox(
@@ -387,6 +388,7 @@ class _DropDown<T> extends StatelessWidget {
     this.changeCompletionDelay,
     this.hasTrailingClearIcon = true,
     this.scrollSensitivity,
+    this.searchBarStyle,
   });
 
   final bool isEnabled;
@@ -413,6 +415,7 @@ class _DropDown<T> extends StatelessWidget {
   final Widget? hintText;
   final Widget? noRecordText;
   final double? scrollSensitivity;
+  final TextStyle? searchBarStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -551,6 +554,7 @@ class _DropDown<T> extends StatelessWidget {
                   searchHintText: searchHintText,
                   changeCompletionDelay: changeCompletionDelay,
                   scrollSensitivity: scrollSensitivity,
+                  searchBarStyle: searchBarStyle,
                 ),
               ),
             ],
@@ -558,7 +562,7 @@ class _DropDown<T> extends StatelessWidget {
         );
       },
       barrierColor: Colors.transparent,
-    ).then(((_) => onDismissDropdown?.call()));
+    ).then((_) => onDismissDropdown?.call());
   }
 }
 
